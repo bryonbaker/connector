@@ -20,10 +20,8 @@ Note: Play with the NUMCONS value in the client's deployment once you have it ru
 2. Deploy RHSI: `skupper init --site-name client --enable-flow-collector --enable-console --console-user admin --console-password password`
 
 ## Client Namespace
-2. Deploy RHSI: `skupper init --site-name client --enable-flow-collector --enable-console --console-user admin --console-password password`
-
-## Client Namespace
-1. Create the token: `skupper token create --token-type cert client-token.yaml`
+1. Deploy RHSI: `skupper init --site-name client --enable-flow-collector --enable-console --console-user admin --console-password password`
+2. Create the token: `skupper token create --token-type cert client-token.yaml`
 
 ## Server Namespace
 1. Create the link: `skupper link create client-token.yaml`
