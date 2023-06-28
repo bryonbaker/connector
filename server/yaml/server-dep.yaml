@@ -29,5 +29,6 @@ spec:
       containers:
         - name: connector-server
           image: quay.io/bryonbaker/connector-server:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
