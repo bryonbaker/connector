@@ -13,21 +13,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conector-server
+  name: connector-server
   labels:
-    app: conector-server
+    app: connector-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: conector-server
+      app: connector-server
   template:
     metadata:
       labels:
-        app: conector-server
+        app: connector-server
     spec:
       containers:
-        - name: conector-server
+        - name: connector-server
           image: quay.io/bryonbaker/connector-server:latest
           ports:
             - containerPort: 8080
