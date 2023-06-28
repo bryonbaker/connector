@@ -22,6 +22,8 @@ func main() {
 		return
 	}
 
+	fmt.Printf("Starting client. Num connections: %d, URL: %s, Port: %s\n", *numConnections, *url, *portNumber)
+
 	var connections []net.Conn
 	var wg sync.WaitGroup
 
