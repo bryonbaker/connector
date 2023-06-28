@@ -1,0 +1,10 @@
+FROM registry.redhat.io/ubi8:latest
+
+# Set environment variables for --port
+ENV PORT=""
+
+WORKDIR /app
+
+COPY server /app/
+
+CMD ./server --port ${PORT}

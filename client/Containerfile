@@ -1,0 +1,12 @@
+FROM registry.redhat.io/ubi8:latest
+
+# Set environment variables for --numcons, --port, and --url
+ENV NUMCONS=0
+ENV PORT=""
+ENV URL=""
+
+WORKDIR /app
+
+COPY client /app/
+
+CMD ./client --numcons ${NUMCONS} --port ${PORT} --url ${URL}
