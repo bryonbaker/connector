@@ -17,7 +17,7 @@ Note: Play with the NUMCONS value in the client's deployment once you have it ru
 
 ## Server Namespace
 1. Deploy the server in one namespace: `oc apply -f server-dep.yaml`
-2. Deploy RHSI: `skupper init --site-name client --enable-flow-collector --enable-console --console-user admin --console-password password`
+2. Deploy RHSI: `skupper init --site-name server --enable-flow-collector --enable-console --console-user admin --console-password password`
 
 ## Client Namespace
 1. Deploy RHSI: `skupper init --site-name client --enable-flow-collector --enable-console --console-user admin --console-password password`
@@ -25,7 +25,7 @@ Note: Play with the NUMCONS value in the client's deployment once you have it ru
 
 ## Server Namespace
 1. Create the link: `skupper link create client-token.yaml`
-2. Expose the deployment: `skupper expose deployment conector-server --port 8080`
+2. Expose the deployment: `skupper expose deployment connector-server --port 8080`
 
 ## Client Namespace
 1. Deploy the client in one namespace: `oc apply -f client-dep.yaml`
