@@ -13,7 +13,9 @@ podman run --name connector-client --rm -e NUMCONS=100 -e URL=your.host.name con
 `
 
 # Running on OpenShift
-Note: Play with the NUMCONS value in the client's deployment once you have it running.
+Note: Play with the NUMCONS value in the client's deployment once you have it running. Specifically, change the count in this line in the `server-dep.yaml`: 
+
+`export NUMCONS="1000"`
 
 ## Server Namespace
 1. Deploy the server in one namespace: `oc apply -f server-dep.yaml`
