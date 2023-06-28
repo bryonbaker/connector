@@ -1,9 +1,9 @@
 FROM registry.redhat.io/ubi8:latest
 
 # Set environment variables for --numcons, --port, and --url
-ENV NUMCONS=0
-ENV PORT=""
-ENV URL=""
+ENV NUMCONS=100
+ENV PORT="8080"
+ENV URL="localhost"
 
 WORKDIR /app
 

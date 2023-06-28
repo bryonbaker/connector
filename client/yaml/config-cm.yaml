@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+data:
+  URL: connector-server.connector-server.svc.cluster.local
+  NUMCONS: "100"

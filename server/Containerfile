@@ -1,7 +1,7 @@
 FROM registry.redhat.io/ubi8:latest
 
 # Set environment variables for --port
-ENV PORT=""
+ENV PORT="8080"
 
 WORKDIR /app
 

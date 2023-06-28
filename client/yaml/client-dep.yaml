@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conector-client
+  labels:
+    app: conector-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: conector-client
+  template:
+    metadata:
+      labels:
+        app: conector-client
+    spec:
+      containers:
+        - name: conector-client
+          image: quay.io/bryonbaker/connector-client:latest
+          command:
+          - /bin/bash
+          - "-c"
+          - |
+            export URL="connector-server.connector-server.svc.cluster.local"
+            export PORT="8080"
+            export NUMCONS="100"
+            echo $NUMCONS
+            echo $URL
+            echo $PORT
+            exec /app/client --numcons $NUMCONS --port $PORT --url $URL
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
