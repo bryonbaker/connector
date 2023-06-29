@@ -3,13 +3,13 @@
 Start the server:
 
 `
-podman run --name connector-server --rm -p 8080:8080 -e PORT=8080 -e XCHNG=2 connector-server:latest
+podman run --name connector-server --rm -p 8080:8080 -e PORT=8080 -e XCHNG=2 quay.io/bryonbaker/connector-server:latest
 `
 
 Start the client. Substitute `your.host.name` for your host name. localhost will not work
 
 `
-podman run --name connector-client --rm -e NUMCONS=2 -e PORT=8080 -e URL=your.host.name -e XCHNG=2 connector-client:latest
+podman run --name connector-client --rm -e NUMCONS=2 -e PORT=8080 -e URL=your.host.name -e XCHNG=2 quay.io/bryonbaker/connector-client:latest
 `
 
 # Running on OpenShift
