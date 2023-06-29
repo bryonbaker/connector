@@ -4,9 +4,10 @@ FROM registry.redhat.io/ubi8:latest
 ENV NUMCONS=100
 ENV PORT="8080"
 ENV URL="localhost"
+ENV XCHNG="0"
 
 WORKDIR /app
 
-COPY client /app/
+COPY bin/client /app/
 
-CMD ./client --numcons ${NUMCONS} --port ${PORT} --url ${URL}
+CMD ./client --numcons ${NUMCONS} --port ${PORT} --url ${URL} --xchng ${XCHNG}

@@ -2,9 +2,10 @@ FROM registry.redhat.io/ubi8:latest
 
 # Set environment variables for --port
 ENV PORT="8080"
+ENV XCHNG="0"
 
 WORKDIR /app
 
-COPY server /app/
+COPY bin/server /app/
 
-CMD ./server --port ${PORT}
+CMD ./server --port ${PORT} --xchng ${XCHNG}

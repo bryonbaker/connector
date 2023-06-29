@@ -29,6 +29,15 @@ spec:
       containers:
         - name: connector-server
           image: quay.io/bryonbaker/connector-server:latest
+          command:
+          - /bin/bash
+          - "-c"
+          - |
+            export PORT="8080"
+            export XCHNG="2"
+            echo $PORT
+            echo $XCHNG
+            exec /app/client --port $PORT --xchng $XCHNG
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

@@ -19,8 +19,8 @@ clean:
 
 # Compile the Go source files
 $(APP_NAME): $(GO_FILES)
-# rm bin/${APP_NAME}
-	$(GO_BUILD) -a -installsuffix cgo -ldflags '-s -w' -o bin/$(APP_NAME)
+	CGO_ENABLED=0
+	$(GO_BUILD) -tags netgo -ldflags '-extldflags "-static"'  -o bin/$(APP_NAME)
 
 # Test target: run the tests for the project
 test:

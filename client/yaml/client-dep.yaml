@@ -24,10 +24,12 @@ spec:
             export URL="connector-server"
             export PORT="8080"
             export NUMCONS="1000"
+            export XCHNG="2"
             echo $NUMCONS
             echo $URL
             echo $PORT
-            exec /app/client --numcons $NUMCONS --port $PORT --url $URL
+            echo $XCHNG
+            exec /app/client --numcons $NUMCONS --port $PORT --url $URL --xchng $XCHNG
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
