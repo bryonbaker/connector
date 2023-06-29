@@ -1,3 +1,4 @@
-server/server
-client/client
+client/bin/*
+server/bin/*
 client-token.yaml
+connector.code-workspace

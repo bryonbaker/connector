@@ -18,10 +18,11 @@ var activeConnections struct {
 
 func main() {
 	portNumber := flag.String("port", "", "Port number")
+	xchng := flag.String("xchng", "", "Data exchange to use (0 = no exchange, 1 = client send only, 2 = client/server response")
 	flag.Parse()
 
-	if *portNumber == "" {
-		fmt.Println("Usage: go run server.go --port <portNumber>")
+	if *portNumber == "" || *xchng == "" {
+		fmt.Println("Usage: go run server.go --port <portNumber> --xchng <0|1|2>")
 		return
 	}
 
@@ -33,17 +34,19 @@ func main() {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
-	fmt.Printf("Server started. Listening on port %s.\n", *portNumber)
+	fmt.Printf("Server started. Listening on port %s. Message exchange mode is %s\n", *portNumber, *xchng)
 
 	// Listen for termination signals (Ctrl-C or SIGTERM)
 	signalCh := make(chan os.Signal, 1)
 	signal.Notify(signalCh, os.Interrupt, syscall.SIGTERM)
 
+	// Create a thread to listen for termination signal and then gracefully close the connections.
 	go func() {
 		<-signalCh
 		fmt.Println("\nTermination signal received. Closing connections...")
 		activeConnections.Lock()
 		for conn := range activeConnections.connections {
+			log.Printf("Closing connection: %s", conn.RemoteAddr())
 			conn.Close()
 		}
 		activeConnections.Unlock()
@@ -51,6 +54,8 @@ func main() {
 		os.Exit(0)
 	}()
 
+	// Loop forever and accept any incoming connection.
+	// Each connection will have its own handler.
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
@@ -62,26 +67,47 @@ func main() {
 		activeConnections.connections[conn] = struct{}{}
 		activeConnections.Unlock()
 
-		go handleConnection(conn)
+		// Start a thread to handle the connection
+		go handleConnection(conn, xchng)
 	}
 }
 
-func handleConnection(conn net.Conn) {
+func handleConnection(conn net.Conn, xchng *string) {
 	// Do whatever operations you need to perform with the connection.
 	// In this example, we keep the connection open until termination.
 
 	fmt.Println("New connection established:", conn.RemoteAddr())
 
-	// Wait for termination signal (SIGTERM) before closing the connection.
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGTERM)
-	<-sigs
+	// Loop forever and respond to hello messages
+	for {
+		if *xchng == "1" || *xchng == "2" {
+			buf := make([]byte, 5)
+			_, err := conn.Read(buf)
+			if err != nil {
+				log.Printf("Failed to read from connection: %v", err)
+				return
+			}
 
-	conn.Close()
+			request := string(buf)
+			if request == "hello" {
+				log.Printf("Hello from: %s", conn.RemoteAddr())
 
-	activeConnections.Lock()
-	delete(activeConnections.connections, conn)
-	activeConnections.Unlock()
+				// Check if we are supposed to send a response back.
+				if *xchng == "2" {
+					_, err = conn.Write([]byte("world"))
+					if err != nil {
+						log.Printf("Failed to send response: %v", err)
+					}
 
-	fmt.Println("Connection closed:", conn.RemoteAddr())
+					log.Printf("Sent 'world' response to client: %s", conn.RemoteAddr())
+				}
+			} else {
+				log.Printf("Received an unexpected request (%s) from client: %s", request, conn.RemoteAddr())
+			}
+		} else {
+			select {} // Enter an idle state and consume minimal resources
+			log.Printf("ERROR: Idle state has reached unreachable code!!!!!")
+
+		}
+	}
 }
